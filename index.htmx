@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>穷游中国 · 大学生版 — 含港澳</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f6f8;color:#222;line-height:1.7}
+.nav{position:sticky;top:0;background:#fff;box-shadow:0 1px 8px rgba(0,0,0,.08);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;z-index:100}
+.nav b{font-size:18px}
+.hero{background:#fff;padding:70px 24px 50px;text-align:center}
+.hero .kicker{color:#1976d2;font-weight:700;letter-spacing:4px;font-size:14px;margin-bottom:16px}
+.hero h1{font-size:42px;line-height:1.25;font-weight:900}
+.hero h1 .hl{color:#7b1fa2}
+.hero p{color:#666;margin:18px 0 26px;font-size:15px}
+.hero .btn{display:inline-block;padding:14px 44px;border-radius:32px;background:#1976d2;color:#fff;font-size:16px;font-weight:600;border:none;cursor:pointer}
+.wrap{max-width:640px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.card h2{font-size:24px;margin-bottom:6px}
+.card .sub{color:#888;font-size:14px;margin-bottom:18px}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:14px;color:#555;margin-bottom:8px}
+select,input[type=text]{width:100%;padding:14px;border:1.5px solid #ddd;border-radius:12px;font-size:16px;background:#fff;color:#222;appearance:none;-webkit-appearance:none}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+#cityList{border:1.5px solid #ddd;border-top:none;border-radius:0 0 12px 12px;max-height:220px;overflow-y:auto;background:#fff;display:none;position:relative;z-index:10}
+#cityList div{padding:11px 16px;font-size:15px;border-bottom:1px solid #f2f2f2;cursor:pointer}
+#cityList div:hover{background:#e3f2fd}
+.range-row{display:flex;align-items:center;gap:12px}
+.range-row input{flex:1}
+.range-val{font-size:20px;font-weight:700;color:#1976d2;min-width:110px;text-align:right}
+.big-btn{width:100%;padding:16px;border:none;border-radius:32px;background:#1a6ee0;color:#fff;font-size:18px;font-weight:700;cursor:pointer;margin-top:6px}
+.total{text-align:center;padding:20px 0 8px}
+.total .num{font-size:64px;font-weight:900;letter-spacing:-2px}
+.total .meta{color:#888;font-size:16px}
+.breakdown{background:#f7f8fa;border-radius:14px;padding:6px 18px;margin:18px 0}
+.brow{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 0;border-bottom:1px solid #eee}
+.brow:last-child{border-bottom:none}
+.brow .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:10px;vertical-align:1px}
+.brow .name{font-size:17px;font-weight:700}
+.brow .desc{color:#999;font-size:13px;margin-left:20px}
+.brow .amt{font-size:20px;font-weight:800;white-space:nowrap}
+.tip{padding:14px 0;border-bottom:1px solid #eee;font-size:15px;color:#333}
+.tip b{color:#1a6ee0;margin-right:8px}
+.dest{border:1.5px solid #eee;border-radius:14px;padding:18px;margin-bottom:12px}
+.dest h3{font-size:20px;display:inline}
+.tag{font-size:12px;padding:3px 10px;border-radius:10px;margin-left:8px;vertical-align:middle}
+.ok{background:#e8f5e9;color:#2e7d32}.no{background:#ffebee;color:#c62828}
+.sub2{color:#888;font-size:13px;margin:4px 0 10px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.badge{background:#f5f6f8;padding:6px 12px;border-radius:8px;font-size:13px}
+.badge b{color:#1a6ee0}
+.plan-btn{width:100%;padding:10px;border:none;border-radius:10px;background:#e3f2fd;color:#1a6ee0;font-size:14px;font-weight:600;cursor:pointer}
+.plan{display:none;margin-top:12px;background:#fafafa;border-radius:10px;padding:14px}
+.plan.show{display:block}
+.plan h4{font-size:14px;color:#1a6ee0;margin:8px 0 4px}
+.plan li{font-size:13px;color:#444;margin-left:18px}
+.foot{text-align:center;color:#aaa;font-size:12px;padding:24px 0 40px}
+</style>
+</head>
+<body>
+
+<nav class="nav"><b>🎒 穷游中国</b><span style="font-size:13px;color:#888">大学生版</span></nav>
+
+<div class="hero">
+  <div class="kicker">BUDGET · CHINA · STUDENT · HK/MACAU</div>
+  <h1>全国目的地，<br><span class="hl">含港澳。</span></h1>
+  <p>选出发城市，往返交通费直接算进总预算，<br>每个目的地自带行程表。</p>
+  <button class="btn" onclick="document.getElementById('planner').scrollIntoView({behavior:'smooth'})">开始规划</button>
+</div>
+
+<div class="wrap" id="planner">
+  <div class="card">
+    <h2>你的行程</h2>
+    <p class="sub">预算给多少，就推荐配得上多少的目的地。</p>
+    <div class="field"><label>🧳 我从哪出发（输入城市名）</label>
+      <input type="text" id="dep" placeholder="如：开封、郑州、乌鲁木齐…" autocomplete="off">
+      <div id="cityList"></div>
+    </div>
+    <div class="field"><label>地区（不限 = 全国推荐）</label>
+      <select id="region">
+        <option value="all">🇨🇳 全国推荐</option>
+        <option>华北（京津冀晋蒙）</option><option>东北（辽吉黑）</option>
+        <option>华东（沪苏浙皖闽赣鲁）</option><option>华中（豫鄂湘）</option>
+        <option>华南（粤桂琼）</option><option>西南（渝川黔滇藏）</option>
+        <option>西北（陕甘青宁新）</option><option>港澳</option>
+      </select></div>
+    <div class="field"><label>出发交通方式</label>
+      <select id="transport">
+        <option value="1">🚄 火车高铁（标准）</option>
+        <option value="0.4">🚂 普通火车硬座（省钱）</option>
+        <option value="0.45">🚌 大巴 / 拼车（最省）</option>
+        <option value="1.6">✈️ 特价机票（抢得到才算）</option>
+      </select></div>
+    <div class="field"><label>身份</label>
+      <select id="identity">
+        <option value="1">🎓 大学生（学生证半价门票）</option>
+        <option value="0.85">🧑‍🎓 应届中高考生（准考证季优惠）</option>
+        <option value="1.5">🧑‍💼 非学生（门票全价）</option>
+      </select></div>
+    <div class="field"><label>天数</label>
+      <select id="days"><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option></select></div>
+    <div class="field"><label>住宿标准</label>
+      <select id="lodging">
+        <option value="1">🛏️ 青旅床位（40-70/晚）</option>
+        <option value="1.6">🏨 经济连锁（120-200/晚）</option>
+        <option value="2.4">🛌 舒适酒店（250+/晚）</option>
+      </select></div>
+    <div class="field"><label>总预算（含往返交通）</label>
+      <div class="range-row"><input type="range" id="budget" min="500" max="8000" step="100" value="2000" oninput="document.getElementById('bv').textContent='¥'+this.value;if(document.getElementById('result').innerHTML)recommend();"><span class="range-val" id="bv">¥2000</span></div></div>
+    <button class="big-btn" onclick="recommend()">为我推荐</button>
+  </div>
+  <div id="result"></div>
+  <div class="card"><h2>💡 高阶穷游技巧</h2><div id="tips"></div></div>
+  <p class="foot">行程表里的日花费是穷游实测标准，丰俭由人<br>祝旅途愉快 🚄</p>
+</div>
+
+<script>
+// ============ 出发城市库 [城市, 省份, lng, lat] ============
+var CITIES=[
+["郑州","河南",113.6,34.7],["开封","河南",114.3,34.8],["洛阳","河南",112.4,34.6],["南阳","河南",112.5,33.0],["安阳","河南",114.4,36.1],["新乡","河南",113.9,35.3],["许昌","河南",113.9,34.0],["平顶山","河南",113.2,33.8],["信阳","河南",114.1,32.1],["商丘","河南",115.7,34.4],["周口","河南",114.7,33.6],["驻马店","河南",114.0,33.0],["焦作","河南",113.2,35.2],["濮阳","河南",115.0,35.8],["漯河","河南",114.0,33.6],["三门峡","河南",111.2,34.8],["鹤壁","河南",114.3,35.7],
+["北京","北京",116.4,39.9],["天津","天津",117.2,39.1],["石家庄","河北",114.5,38.0],["唐山","河北",118.2,39.6],["保定","河北",115.5,38.9],["邯郸","河北",114.5,36.6],["秦皇岛","河北",119.6,39.9],["张家口","河北",114.9,40.8],["承德","河北",117.9,40.9],["沧州","河北",116.8,38.3],["廊坊","河北",116.7,39.5],["衡水","河北",115.7,37.7],["太原","山西",112.5,37.9],["大同","山西",113.3,40.1],["长治","山西",113.1,36.2],["临汾","山西",111.5,36.1],["运城","山西",111.0,35.0],["呼和浩特","内蒙古",111.7,40.8],["包头","内蒙古",109.8,40.7],["赤峰","内蒙古",118.9,42.3],["鄂尔多斯","内蒙古",109.8,39.6],
+["沈阳","辽宁",123.4,41.8],["大连","辽宁",121.6,38.9],["丹东","辽宁",124.4,40.0],["长春","吉林",125.3,43.9],["延吉","吉林",129.5,42.9],["哈尔滨","黑龙江",126.6,45.8],["牡丹江","黑龙江",129.6,44.6],
+["上海","上海",121.5,31.2],["南京","江苏",118.8,32.1],["苏州","江苏",120.6,31.3],["无锡","江苏",120.3,31.5],["徐州","江苏",117.2,34.3],["扬州","江苏",119.4,32.4],["镇江","江苏",119.4,32.2],["杭州","浙江",120.2,30.3],["宁波","浙江",121.5,29.9],["温州","浙江",120.7,28.0],["绍兴","浙江",120.6,30.0],["舟山","浙江",122.2,30.0],["衢州","浙江",118.9,28.9],["合肥","安徽",117.3,31.9],["黄山","安徽",118.3,29.7],["阜阳","安徽",115.8,32.9],["福州","福建",119.3,26.1],["厦门","福建",118.1,24.5],["泉州","福建",118.6,24.9],["南昌","江西",115.9,28.7],["赣州","江西",114.9,25.8],["上饶","江西",117.9,28.5],["济南","山东",117.0,36.7],["青岛","山东",120.4,36.1],["烟台","山东",121.4,37.5],["泰安","山东",117.1,36.2],["菏泽","山东",115.5,35.2],
+["武汉","湖北",114.3,30.6],["宜昌","湖北",111.3,30.7],["襄阳","湖北",112.1,32.0],["荆州","湖北",112.2,30.3],["恩施","湖北",109.5,30.3],["长沙","湖南",113.0,28.2],["衡阳","湖南",112.6,26.9],["岳阳","湖南",113.1,29.4],["郴州","湖南",113.0,25.8],["张家界","湖南",110.5,29.1],
+["广州","广东",113.3,23.1],["深圳","广东",114.1,22.5],["珠海","广东",113.6,22.3],["佛山","广东",113.1,23.0],["惠州","广东",114.4,23.1],["汕头","广东",116.7,23.4],["潮州","广东",116.6,23.7],["湛江","广东",110.4,21.2],["肇庆","广东",112.5,23.1],["韶关","广东",113.6,24.8],["南宁","广西",108.3,22.8],["柳州","广西",109.4,24.3],["桂林","广西",110.3,25.3],["北海","广西",109.1,21.5],["海口","海南",110.3,20.0],["三亚","海南",109.5,18.3],
+["重庆","重庆",106.5,29.6],["成都","四川",104.1,30.7],["乐山","四川",103.8,29.6],["雅安","四川",103.0,30.0],["贵阳","贵州",106.7,26.6],["遵义","贵州",107.0,27.7],["安顺","贵州",105.9,26.2],["凯里","贵州",107.9,26.6],["昆明","云南",102.7,25.0],["大理","云南",100.2,25.6],["丽江","云南",100.2,26.9],["景洪","云南",100.8,22.0],["拉萨","西藏",91.1,29.7],["林芝","西藏",94.4,29.6],
+["西安","陕西",108.9,34.3],["汉中","陕西",107.0,33.1],["兰州","甘肃",103.8,36.1],["天水","甘肃",105.7,34.6],["张掖","甘肃",100.4,38.9],["酒泉","甘肃",98.5,39.7],["西宁","青海",101.8,36.6],["银川","宁夏",106.2,38.5],["中卫","宁夏",105.2,37.5],["乌鲁木齐","新疆",87.6,43.8],["喀什","新疆",75.99,39.5],["伊犁","新疆",81.3,43.9],
+["香港","港澳",114.2,22.3],["澳门","港澳",113.5,22.2]
+];
+var PROV_CENTER={"北京":[116.4,39.9],"天津":[117.2,39.1],"上海":[121.5,31.2],"重庆":[106.5,29.6],"河北":[114.5,38.2],"山西":[112.4,37.6],"内蒙古":[111.7,42.0],"辽宁":[123.0,41.5],"吉林":[126.0,43.5],"黑龙江":[127.5,46.5],"江苏":[119.5,32.8],"浙江":[120.5,29.5],"安徽":[117.2,31.8],"福建":[118.5,26.0],"江西":[115.9,27.6],"山东":[118.0,36.3],"河南":[113.8,33.9],"湖北":[112.5,30.9],"湖南":[112.0,27.8],"广东":[113.5,23.0],"广西":[109.0,23.5],"海南":[109.8,19.2],"四川":[104.0,30.5],"贵州":[106.8,27.0],"云南":[101.5,24.5],"西藏":[91.5,29.8],"陕西":[108.9,34.3],"甘肃":[103.5,37.0],"青海":[96.5,36.0],"宁夏":[106.0,38.0],"新疆":[87.6,43.8],"港澳":[114.0,22.3]};
+var REGION_MAP={"华北（京津冀晋蒙）":"华北","东北（辽吉黑）":"东北","华东（沪苏浙皖闽赣鲁）":"华东","华中（豫鄂湘）":"华中","华南（粤桂琼）":"华南","西南（渝川黔滇藏）":"西南","西北（陕甘青宁新）":"西北","港澳":"港澳"};
+
+// ============ 目的地数据库 [名称,区域,lng,lat,建议天数,当地日均,亮点] ============
+// ★ 每个目的地都有真实经纬度，距离按真实位置算
+var RAW=[
+["北京","华北",116.4,39.9,4,260,"天安门升旗|故宫学生半价|长城公交直达"],
+["天津","华北",117.2,39.1,2,220,"五大道免费|天津之眼|煎饼果子6元"],
+["大同","华北",113.3,40.1,2,200,"云冈石窟半价|悬空寺|刀削面10元"],
+["呼和浩特","华北",111.7,40.8,3,230,"草原骑马|蒙古包住宿|烤全羊拼桌"],
+["承德","华北",117.9,40.9,2,190,"避暑山庄半价|外八庙|坝上草原"],
+["秦皇岛","华北",119.6,39.9,2,200,"北戴河免费海滩|山海关半价|鸽子窝日出"],
+["保定","华北",115.5,38.9,1,170,"直隶总督署|古莲花池|驴肉火烧8元"],
+["平遥","华北",112.2,37.2,2,190,"古城免费进|通票看景点|平遥牛肉"],
+["太原","华北",112.5,37.9,2,180,"晋祠半价|山西博物院免费|柳巷小吃"],
+["五台山","华北",113.3,39.0,2,180,"门票半价|显通寺|素斋体验"],
+["临汾","华北",111.5,36.1,2,170,"壶口瀑布半价|大槐树|云丘山冰洞"],
+["赤峰","华北",118.9,42.3,2,200,"乌兰布统草原|阿斯哈图石林|达里诺尔湖"],
+["哈尔滨","东北",126.6,45.8,3,220,"中央大街|索菲亚教堂|冰雪大世界"],
+["大连","东北",121.6,38.9,3,220,"滨海路免费|星海广场|渔人码头"],
+["长春","东北",125.3,43.9,2,180,"伪满皇宫半价|长影旧址|净月潭"],
+["沈阳","东北",123.4,41.8,2,180,"故宫半价|张氏帅府|中街鸡架"],
+["吉林","东北",126.5,43.8,2,170,"雾凇岛|松花湖|北山公园"],
+["牡丹江","东北",129.6,44.6,2,180,"镜泊湖半价|雪乡(冬)|地下森林"],
+["延吉","东北",129.5,42.9,2,180,"网红弹幕墙|冷面|民俗园"],
+["丹东","东北",124.4,40.0,2,170,"断桥|鸭绿江|朝鲜族美食"],
+["上海","华东",121.5,31.2,3,320,"外滩免费|博物馆免费|武康路Citywalk"],
+["杭州","华东",120.2,30.3,3,260,"西湖全免费|灵隐寺半价|龙井村喝茶"],
+["南京","华东",118.8,32.1,3,240,"中山陵免费|博物院免费|鸭血粉丝15元"],
+["苏州","华东",120.6,31.3,2,230,"拙政园半价|平江路免费|苏博免费"],
+["青岛","华东",120.4,36.1,3,260,"海滨免费|崂山半价|散啤5元"],
+["厦门","华东",118.1,24.5,3,260,"鼓浪屿|厦大预约|沙茶面15元"],
+["黄山","华东",118.3,29.7,3,280,"门票学生半价95元|三日有效|山顶帐篷省300"],
+["婺源","华东",117.9,29.3,3,200,"篁岭晒秋学生半价|江岭油菜花(春)|李坑古村"],
+["无锡","华东",120.3,31.5,2,210,"鼋头渚半价|南长街|灵山大佛"],
+["镇江","华东",119.4,32.2,1,170,"金山寺半价|西津渡|锅盖面"],
+["扬州","华东",119.4,32.4,2,190,"瘦西湖半价|东关街|早茶30元"],
+["绍兴","华东",120.6,30.0,2,180,"鲁迅故里免费|东湖|黄酒奶茶"],
+["宁波","华东",121.5,29.9,2,200,"老外滩|天一阁半价|东钱湖"],
+["舟山","华东",122.2,30.0,2,220,"普陀山学生票|东极岛|海鲜加工"],
+["温州","华东",120.7,28.0,2,200,"雁荡山半价|五马街|楠溪江"],
+["衢州","华东",118.9,28.9,2,160,"江郎山半价|廿八都|孔庙"],
+["合肥","华东",117.3,31.9,1,170,"三河古镇|省博免费|步行街"],
+["福州","华东",119.3,26.1,2,210,"三坊七巷免费|鼓山|鱼丸10元"],
+["泉州","华东",118.6,24.9,2,190,"开元寺免费|西街|面线糊8元"],
+["武夷山","华东",118.0,27.8,3,240,"景区半价|九曲溪竹筏|岩茶体验"],
+["南昌","华东",115.9,28.7,2,180,"滕王阁半价|八一馆免费|瓦罐汤"],
+["济南","华东",117.0,36.7,2,190,"趵突泉半价|大明湖免费|芙蓉街"],
+["泰安","华东",117.1,36.2,2,180,"泰山学生半价57元|夜爬看日出|天外村"],
+["曲阜","华东",117.0,35.6,1,160,"三孔学生半价|尼山圣境|煎饼"],
+["烟台","华东",121.4,37.5,2,200,"海滨免费|蓬莱阁半价|鲅鱼水饺"],
+["广州","华南",113.3,23.1,3,280,"早茶人均30|沙面免费|省博免费"],
+["深圳","华南",114.1,22.5,3,300,"大梅沙免费|深圳湾公园|华强北"],
+["桂林","华南",110.3,25.3,4,240,"象鼻山半价|阳朔骑行|米粉8元"],
+["阳朔","华南",110.5,24.8,2,220,"十里画廊|遇龙河竹筏|西街"],
+["北海","华南",109.1,21.5,3,230,"银滩免费|涠洲岛|侨港夜市"],
+["南宁","华南",108.3,22.8,2,180,"青秀山半价|中山路夜市|老友粉"],
+["三亚","华南",109.5,18.3,3,380,"后海冲浪|天涯镇|第一市场"],
+["海口","华南",110.3,20.0,2,200,"骑楼老街|假日海滩|清补凉"],
+["潮州","华南",116.6,23.7,2,160,"牌坊街|广济桥半价|牛肉丸"],
+["汕头","华南",116.7,23.4,2,160,"小公园|牛肉火锅|南澳岛"],
+["佛山","华南",113.1,23.0,1,170,"祖庙半价|岭南天地|双皮奶"],
+["肇庆","华南",112.5,23.1,2,170,"七星岩半价|鼎湖山|裹蒸粽"],
+["韶关","华南",113.6,24.8,2,180,"丹霞山半价|南华寺|梅关古道"],
+["惠州","华南",114.4,23.1,2,170,"巽寮湾|西湖免费|罗浮山"],
+["珠海","华南",113.6,22.3,2,210,"情侣路|淇澳岛|长隆外围"],
+["湛江","华南",110.4,21.2,2,160,"赤坎老街|生蚝便宜|湖光岩"],
+["柳州","华南",109.4,24.3,2,160,"螺蛳粉10元|紫荆花海|柳江夜景"],
+["长沙","华中",113.0,28.2,2,200,"橘子洲免费|岳麓山免费|茶颜悦色"],
+["武汉","华中",114.3,30.6,3,220,"黄鹤楼半价|省博免费|热干面5元"],
+["洛阳","华中",112.4,34.6,3,200,"龙门石窟学生半价45元|洛邑古城免费|水席"],
+["开封","华中",114.3,34.8,2,160,"清明上河园学生半价60元|鼓楼夜市|灌汤包10元"],
+["郑州","华中",113.6,34.7,2,170,"省博免费|少林寺半价|烩面"],
+["安阳","华中",114.4,36.1,2,160,"殷墟半价|文字博物馆免费|太行峡谷"],
+["焦作","华中",113.2,35.2,2,180,"云台山半价|红石峡|茱萸峰"],
+["岳阳","华中",113.1,29.4,1,150,"岳阳楼半价|洞庭湖|巴陵广场"],
+["衡阳","华中",112.6,26.9,2,170,"衡山半价|南岳大庙|山顶日出"],
+["宜昌","华中",111.3,30.7,2,180,"三峡大坝免费|清江画廊|三峡人家"],
+["襄阳","华中",112.1,32.0,1,150,"古城免费|唐城夜景|牛肉面黄酒"],
+["荆州","华中",112.2,30.3,1,150,"古城墙半价|博物馆免费|张居正故居"],
+["信阳","华中",114.1,32.1,2,150,"鸡公山半价|南湾湖|毛尖茶园"],
+["张家界","华中",110.5,29.1,3,240,"国家森林公园|天门山半价|玻璃栈道"],
+["成都","西南",104.1,30.7,3,260,"熊猫基地半价|人民公园喝茶|宽窄巷子"],
+["重庆","西南",106.5,29.6,3,230,"洪崖洞免费|小面8元|轻轨穿楼"],
+["昆明","西南",102.7,25.0,2,210,"滇池免费|石林半价|米线10元"],
+["大理","西南",100.2,25.6,3,240,"洱海骑行|古城免费|喜洲粑粑"],
+["丽江","西南",100.2,26.9,3,260,"玉龙雪山半价|束河免费|黑龙潭"],
+["香格里拉","西南",99.7,27.8,3,250,"普达措半价|松赞林寺|独克宗"],
+["西双版纳","西南",100.8,22.0,3,250,"植物园半价|告庄夜市|傣味手抓饭"],
+["腾冲","西南",98.5,25.0,3,230,"热海半价|和顺古镇|银杏村"],
+["荔波","西南",107.9,25.4,2,200,"小七孔学生半价|68级瀑布|水上森林"],
+["贵阳","西南",106.7,26.6,3,200,"甲秀楼免费|黄果树半价|酸汤鱼"],
+["遵义","西南",107.0,27.7,1,150,"会议会址免费|赤水丹霞|羊肉粉"],
+["安顺","西南",105.9,26.2,2,180,"黄果树半价|龙宫半价|旧州古镇"],
+["凯里","西南",107.9,26.6,2,170,"千户苗寨|长桌宴|酸汤鱼发源地"],
+["拉萨","西南",91.1,29.7,4,280,"布达拉宫半价|八廓街|甜茶馆"],
+["林芝","西南",94.4,29.6,3,260,"桃花沟|大峡谷半价|鲁朗林海"],
+["乐山","西南",103.8,29.6,2,180,"大佛半价|钵钵鸡|跷脚牛肉"],
+["峨眉山","西南",103.5,29.5,2,200,"门票半价|金顶日出|山下豆腐脑"],
+["雅安","西南",103.0,30.0,2,170,"碧峰峡半价|上里古镇|蒙顶山"],
+["自贡","西南",104.8,29.3,1,150,"恐龙博物馆半价|盐帮菜|灯会"],
+["阆中","西南",106.0,31.6,2,160,"古城免费|张飞牛肉|贡院"],
+["西安","西北",108.9,34.3,3,230,"城墙半价|兵马俑半价|回民街"],
+["兰州","西北",103.8,36.1,2,180,"中山桥|牛肉面8元|省博免费"],
+["西宁","西北",101.8,36.6,3,190,"青海湖半价|塔尔寺半价|酸奶8元"],
+["敦煌","西北",94.7,40.1,3,220,"莫高窟学生半价|鸣沙山日落|雅丹魔鬼城"],
+["嘉峪关","西北",98.3,39.8,1,160,"关城半价|悬壁长城|烤肉"],
+["张掖","西北",100.4,38.9,2,180,"七彩丹霞半价|大佛寺|马蹄寺"],
+["天水","西北",105.7,34.6,2,160,"麦积山半价|伏羲庙|浆水面"],
+["乌鲁木齐","西北",87.6,43.8,3,230,"大巴扎|天池半价|博物馆免费"],
+["喀什","西北",76.0,39.5,3,210,"古城免费|百年老茶馆|牛羊大巴扎"],
+["伊犁","西北",81.3,43.9,3,220,"那拉提草原半价|薰衣草|独库公路"],
+["吐鲁番","西北",89.2,42.9,2,170,"火焰山|葡萄沟半价|坎儿井"],
+["银川","西北",106.2,38.5,2,170,"西夏陵半价|镇北堡影视城|手抓羊肉"],
+["中卫","西北",105.2,37.5,2,180,"沙坡头半价|66号公路|黄河宿集"],
+["香港","港澳",114.2,22.3,3,450,"维港夜景免费|叮叮车3元|麦理浩径"],
+["澳门","港澳",113.5,22.2,2,380,"大三巴免费|葡挞|赌场免费大巴"]
+];
+var DB=RAW.map(function(r){return{name:r[0],region:r[1],lng:r[2],lat:r[3],days:r[4],local:r[5],hl:r[6].split("|")};});
+var TIPS=[
+"<b>往返交通</b>：是大头。1300km 以上特价机票常比高铁便宜，本工具已自动帮你取低价。",
+"<b>应届中高考生</b>：6-8 月上百家景区凭准考证免首道门票或半价，出发前查景区公众号。",
+"<b>住宿</b>：青旅床位是穷游底牌，旺季提前 3-7 天订；淡季到店砍价常比线上便宜。",
+"<b>门票</b>：学生证+身份证随身带，几乎所有景区半价；很多博物馆免费但要公众号预约。",
+"<b>吃</b>：景区 500 米内不吃饭，往居民区走两条街；本地人排队的店就是好店。",
+"<b>备用金</b>：预算留 5% 机动，总有意外（回程赶不上、临时加景点）。",
+"<b>港澳</b>：从深圳/珠海口岸过关最省；办一张八达通；太平山有免费观景台；提前办港澳通行证签注。",
+"<b>时段</b>：淡季出行全线便宜 30%-50%，人还少；夜车火车省一晚住宿。"
+];
+
+function dist(lng1,lat1,lng2,lat2){
+ var dx=(lng1-lng2)*96,dy=(lat1-lat2)*111;
+ return Math.sqrt(dx*dx+dy*dy);
+}
+function findCity(name){
+ name=name.trim();
+ if(!name)return{lng:116.4,lat:39.9,exact:false,prov:"未知"};
+ for(var i=0;i<CITIES.length;i++){if(CITIES[i][0]===name)return{lng:CITIES[i][2],lat:CITIES[i][3],exact:true};}
+ for(var j=0;j<CITIES.length;j++){if(CITIES[j][0].indexOf(name)>=0||name.indexOf(CITIES[j][0])>=0)return{lng:CITIES[j][2],lat:CITIES[j][3],exact:true};}
+ for(var p in PROV_CENTER){if(name.indexOf(p)>=0||p.indexOf(name)>=0){var c=PROV_CENTER[p];return{lng:c[0],lat:c[1],exact:false,prov:p};}}
+ return{lng:116.4,lat:39.9,exact:false,prov:"未知"};
+}
+// 真实行情：高铁0.51元/km，硬座/大巴0.18元/km，特价机票0.3元/km+200（单程最低300，含税口径）
+// 超1300km且机票明显便宜时自动取机票（含5%抢票成本），往返双程
+function transFee(km,tMul){
+ var trainOne=km*0.51+40;
+ var cheapOne=km*0.18+30;
+ var flightOne=Math.max(300,Math.round(km*0.30+200));
+ var one;
+ if(tMul===1.6){one=flightOne;}
+ else if(tMul===0.4||tMul===0.45){one=cheapOne;}
+ else{
+   one=trainOne;
+   if(km>1300&&flightOne<trainOne*0.85){one=flightOne*1.05;}
+ }
+ return Math.max(80,Math.round(one*2));
+}
+
+var depInput=document.getElementById('dep'),cityList=document.getElementById('cityList');
+depInput.addEventListener('input',function(){
+ var v=this.value.trim(),html='';
+ if(v){
+  var hits=CITIES.filter(function(c){return c[0].indexOf(v)>=0||v.indexOf(c[0])>=0;}).slice(0,8);
+  hits.forEach(function(c){html+='<div onclick="pick(\''+c[0]+'\')">'+c[0]+' <span style="color:#aaa;font-size:12px">'+c[1]+'</span></div>';});
+ }
+ cityList.innerHTML=html;cityList.style.display=html?'block':'none';
+});
+depInput.addEventListener('blur',function(){setTimeout(function(){cityList.style.display='none';},200);});
+function pick(n){depInput.value=n;cityList.style.display='none';}
+
+function recommend(){
+ var depName=depInput.value.trim()||"北京";
+ var region=document.getElementById('region').value;
+ var tMul=+document.getElementById('transport').value;
+ var iMul=+document.getElementById('identity').value;
+ var days=+document.getElementById('days').value;
+ var lMul=+document.getElementById('lodging').value;
+ var budget=+document.getElementById('budget').value;
+ var dep=findCity(depName);
+ var reg=REGION_MAP[region]||"all";
+ var list=DB.filter(function(d){return reg==="all"||d.region===reg;});
+ list=list.map(function(d){
+   // ★ 按目的地真实经纬度算距离
+   var km=dist(dep.lng,dep.lat,d.lng,d.lat);
+   var trans=transFee(km,tMul);
+   var local=Math.round(d.local*(0.55+lMul*0.45)*(iMul===1.5?1.25:(iMul===0.85?0.92:1))*days);
+   var total=trans+local+Math.round((trans+local)*0.05);
+   return{d:d,km:km,trans:trans,local:local,total:total};
+ });
+ list.sort(function(a,b){return a.total-b.total;});
+
+ // 预算驱动：锚点=预算内最贵的，从贵到便宜均匀取样铺开
+ var show,noneMsg=false;
+ var inB=list.filter(function(x){return x.total<=budget;});
+ if(inB.length===0){
+   show=list.slice(0,3);noneMsg=true;
+ }else{
+   var picks=[inB[inB.length-1]];
+   var rest=inB.slice(0,-1);
+   if(rest.length){
+     var step=Math.max(1,Math.floor(rest.length/5));
+     for(var i=rest.length-1;i>=0&&picks.length<6;i-=step){picks.push(rest[i]);}
+   }
+   var stretch=list.filter(function(x){return x.total>budget&&x.total<=budget*1.25;});
+   if(stretch.length&&picks.length<7)picks.push(stretch[0]);
+   show=picks;
+ }
+ // 越接近预算排越前
+ show.sort(function(a,b){
+   var da=Math.abs(budget-a.total),db=Math.abs(budget-b.total);
+   return da-db;
+ });
+
+ var html="";
+ if(show.length){
+   var best=show[0];
+   var within=best.total<=budget;
+   html+='<div class="card"><h2>'+(within?'✅ 在预算内！':'⚠️ 稍微超一点')+'</h2><p class="sub">从 '+depName+(dep.exact?'':'（按'+(dep.prov||'附近')+'位置估算）')+' 出发，这个预算最好的去处是：</p>';
+   html+='<div class="total"><div class="num">¥'+best.total.toLocaleString()+'</div><div class="meta">'+(within?'在预算内':'超预算 ¥'+(best.total-budget))+' · 日均 ¥'+Math.round(best.total/days)+' · '+days+' 天 · <b>'+best.d.name+'</b></div></div>';
+   html+='<div class="breakdown">';
+   html+='<div class="brow"><span class="name"><span class="dot" style="background:#1a6ee0"></span>交通往返<div class="desc">从 '+depName+' 出发约 '+Math.round(best.km)+'km × 往返</div></span><span class="amt">¥'+best.trans.toLocaleString()+'</span></div>';
+   html+='<div class="brow"><span class="name"><span class="dot" style="background:#f5a623"></span>当地吃住玩<div class="desc">目的地实测标准</div></span><span class="amt">¥'+best.local.toLocaleString()+'</span></div>';
+   html+='<div class="brow"><span class="name"><span class="dot" style="background:#bbb"></span>机动备用<div class="desc">总有意外</div></span><span class="amt">¥'+(best.total-best.trans-best.local).toLocaleString()+'</span></div>';
+   html+='</div></div>';
+   html+='<div class="card"><h2>为你挑选的目的地</h2><p class="sub">'+(noneMsg?'⚠️ 当前预算去不了'+(reg==="all"?"这些地方":region)+'，这是最接近的选择：':'预算 ¥'+budget.toLocaleString()+' · '+(reg==="all"?"全国":region)+' · 调整预算会解锁不同目的地')+'</p>';
+   show.forEach(function(x){
+     var ok=x.total<=budget;
+     html+='<div class="dest"><h3>'+x.d.name+'</h3><span class="tag '+(ok?'ok':'no')+'">'+(ok?'✅ ¥'+x.total.toLocaleString()+' 在预算内':'⚠️ ¥'+x.total.toLocaleString()+' 超预算')+'</span>';
+     html+='<p class="sub2">'+x.d.region+' · '+x.d.hl.join(' / ')+'</p>';
+     html+='<div class="badges"><span class="badge">🚄 从'+depName+'往返约 <b>¥'+x.trans+'</b>（'+Math.round(x.km)+'km）</span><span class="badge">🧾 当地约 <b>¥'+x.local+'</b></span><span class="badge">📅 建议 '+x.d.days+' 天</span></div>';
+     html+='<button class="plan-btn" onclick="this.nextElementSibling.classList.toggle(\'show\')">查看行程建议 ▼</button><div class="plan">'+makePlan(x.d,days)+'</div></div>';
+   });
+   html+='</div>';
+ }else{
+   html='<div class="card"><h2>😕 没找到匹配</h2><p class="sub">试试放宽地区或提高预算。</p></div>';
+ }
+ document.getElementById('result').innerHTML=html;
+ document.getElementById('tips').innerHTML=TIPS.map(function(t){return '<div class="tip">› '+t+'</div>';}).join('');
+}
+function makePlan(d,days){
+ var h='',n=Math.min(days,d.days+2);
+ for(var i=0;i<n;i++){
+   h+='<h4>Day '+(i+1)+'</h4><ul><li>'+d.hl[i%d.hl.length]+'</li><li>'+d.hl[(i+1)%d.hl.length]+'</li><li>晚上：当地夜市/老街逛吃，住青旅</li></ul>';
+ }
+ return h;
+}
+</script>
+</body>
+</html>
