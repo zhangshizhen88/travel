@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="穷游中国 · 大学生版 — 含港澳、深圳入境省钱攻略、行程表、全国目的地推荐。">
+<meta name="theme-color" content="#ffffff">
+<title>穷游中国 · 大学生版 — 含港澳 · 深圳入境省钱攻略</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","PingFang SC","Helvetica Neue",sans-serif}
+  :root{--blue:#0071e3;--text:#1d1d1f;--text2:#6e6e73;--line:#e8e8ed;--bg:#f5f5f7;--ease:cubic-bezier(.28,.11,.32,1)}
+  html{scroll-behavior:smooth}
+  body{background:#fff;color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:rgba(0,113,227,.2)}
+
+  nav{position:fixed;inset:0 0 auto;height:52px;z-index:100;background:rgba(255,255,255,.72);
+    backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;
+    gap:32px;font-size:12.5px}
+  nav a{color:var(--text);opacity:.85;text-decoration:none;transition:color .2s;cursor:pointer}
+  nav a:hover{color:var(--blue);opacity:1}
+  .switch{position:fixed;top:12px;right:16px;z-index:101;display:flex;align-items:center;gap:8px;
+    font-size:12.5px;color:var(--text2);cursor:pointer;user-select:none}
+  .switch-track{width:42px;height:26px;border-radius:100px;background:#d2d2d7;position:relative;transition:background .25s}
+  .switch-track::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;
+    border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .25s var(--ease)}
+  .switch.on .switch-track{background:var(--blue)}
+  .switch.on .switch-track::after{transform:translateX(16px)}
+  .switch.on{color:var(--blue)}
+
+  .hero{min-height:80vh;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:120px 24px 60px}
+  .eyebrow{font-size:15px;font-weight:600;color:var(--blue);letter-spacing:3px;
+    text-transform:uppercase;margin-bottom:16px;animation:rise .7s var(--ease) both}
+  h1{font-size:clamp(42px,8vw,88px);font-weight:700;letter-spacing:-3px;line-height:1.03;
+    animation:rise .7s var(--ease) .08s both}
+  h1 em{font-style:normal;background:linear-gradient(120deg,#0071e3,#7a4dff 60%,#c04dff);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero-sub{font-size:clamp(18px,2.5vw,25px);color:var(--text2);margin-top:18px;
+    max-width:640px;line-height:1.45;animation:rise .7s var(--ease) .16s both}
+  .hero-cta{margin-top:36px;animation:rise .7s var(--ease) .24s both}
+  .pill{padding:14px 34px;border-radius:100px;font-size:17px;font-weight:500;cursor:pointer;
+    border:none;transition:.2s var(--ease)}
+  .pill.primary{background:var(--blue);color:#fff}
+  .pill.primary:hover{background:#0077ed;transform:translateY(-1px)}
+  @keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  main{max-width:720px;margin:0 auto;padding:0 24px}
+  section{padding:80px 0;content-visibility:auto;contain-intrinsic-size:auto 700px}
+  h2{font-size:clamp(30px,5vw,48px);font-weight:700;letter-spacing:-1.5px;line-height:1.1}
+  .sub{font-size:clamp(16px,2.2vw,21px);color:var(--text2);margin:10px 0 32px;line-height:1.5}
+
+  .field{margin-bottom:24px}
+  .field label{display:block;font-size:13px;color:var(--text2);margin-bottom:8px}
+  select,input[type=number]{width:100%;padding:14px 16px;font-size:17px;border-radius:12px;
+    border:1px solid #d2d2d7;background:#fff;color:var(--text);outline:none;appearance:none;transition:border-color .2s}
+  select:focus,input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(0,113,227,.12)}
+
+  .seg{display:flex;background:var(--bg);border-radius:12px;padding:4px}
+  .seg button{flex:1;padding:12px 8px;border:none;border-radius:9px;background:transparent;
+    font-size:15px;color:var(--text);cursor:pointer;transition:.2s}
+  .seg button.on{background:#fff;font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+
+  .slider-row{margin:32px 0}
+  .slider-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+  .slider-head span:first-child{font-size:13px;color:var(--text2)}
+  .slider-val{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums}
+  .slider-val small{font-size:14px;font-weight:400;color:var(--text2)}
+  input[type=range]{width:100%;height:4px;-webkit-appearance:none;appearance:none;border-radius:2px;
+    touch-action:pan-y;background:linear-gradient(90deg,var(--blue) var(--p,15%),#e8e8ed var(--p,15%))}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;
+    border-radius:50%;background:#fff;cursor:grab;
+    box-shadow:0 1px 4px rgba(0,0,0,.25),0 4px 12px rgba(0,0,0,.12)}
+
+  .tags{display:flex;flex-wrap:wrap;gap:10px}
+  .tag{padding:10px 22px;border-radius:100px;background:var(--bg);color:var(--text);
+    font-size:15px;cursor:pointer;border:none;transition:background .15s,color .15s}
+  .tag.on{background:var(--text);color:#fff}
+
+  .btn{width:100%;padding:17px;margin-top:32px;border:none;border-radius:100px;
+    background:var(--blue);color:#fff;font-size:17px;font-weight:500;cursor:pointer;
+    transition:background .2s,transform .15s var(--ease)}
+  .btn:hover{background:#0077ed}
+  .btn:active{transform:scale(.98)}
+
+  .student-note{display:none;margin-bottom:24px;padding:14px 18px;border-radius:14px;
+    background:rgba(0,113,227,.07);border:1px solid rgba(0,113,227,.15);font-size:14px;line-height:1.6}
+  body.student .student-note{display:block}
+  .student-note b{color:var(--blue)}
+
+  #result{display:none;margin-top:32px;padding-top:64px;border-top:1px solid var(--line)}
+  .budget-hero{text-align:center;margin-bottom:8px}
+  .budget-num{font-size:clamp(60px,13vw,110px);font-weight:700;letter-spacing:-3px;
+    font-variant-numeric:tabular-nums}
+  .budget-num.over{color:#ff3b30}
+  .per-day{color:var(--text2);font-size:18px;margin-top:4px}
+  .saved-badge{display:none;margin:16px auto 40px;width:fit-content;padding:10px 26px;
+    border-radius:100px;background:rgba(48,209,88,.12);color:#248a3d;font-size:16px;font-weight:600}
+  .saved-badge.show{display:block}
+
+  .detail{background:var(--bg);border-radius:20px;padding:6px 24px}
+  .detail-row{display:flex;align-items:center;padding:16px 0;
+    border-bottom:1px solid rgba(0,0,0,.06);font-size:17px}
+  .detail-row:last-child{border:none}
+  .detail-row .dot{width:8px;height:8px;border-radius:50%;margin-right:14px;flex-shrink:0}
+  .detail-row b{margin-left:auto;font-size:18px;font-weight:600;font-variant-numeric:tabular-nums}
+  .detail-row small{color:var(--text2);font-size:12px;display:block;margin-top:2px}
+
+  .tips{margin-top:28px}
+  .tip{display:flex;gap:12px;padding:14px 0;font-size:15px;line-height:1.6;
+    border-bottom:1px solid var(--line)}
+  .tip:last-child{border:none}
+  .tip-icon{color:var(--blue);flex-shrink:0}
+
+  /* ===== 目的地卡片 + 行程表 ===== */
+  .dest-list-title{font-size:26px;font-weight:700;letter-spacing:-1px;margin:48px 0 6px}
+  .dest-count{color:var(--text2);font-size:15px;margin-bottom:20px}
+  .dest{background:var(--bg);border-radius:24px;padding:28px;margin-bottom:16px;
+    animation:rise .5s var(--ease) both}
+  .dest-name{font-size:22px;font-weight:700;letter-spacing:-.5px}
+  .dest-tag{color:var(--blue);font-size:13.5px;margin:4px 0 12px}
+  .dest-desc{font-size:15px;color:var(--text2);line-height:1.7}
+  .dest-meta{display:flex;gap:16px;margin-top:14px;font-size:13px;color:var(--text2);flex-wrap:wrap}
+  .dest-meta b{color:var(--text);font-weight:600}
+  .fit{display:inline-block;padding:3px 12px;border-radius:100px;font-size:12px;font-weight:600}
+  .fit.perfect{background:rgba(48,209,88,.15);color:#248a3d}
+  .fit.good{background:rgba(255,159,10,.15);color:#b25000}
+  .fit.over{background:rgba(255,59,48,.12);color:#c9302c}
+
+  .dest-summary{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 4px}
+  .chip{padding:8px 16px;border-radius:100px;background:#fff;font-size:13.5px;color:var(--text)}
+  .chip b{color:var(--blue)}
+
+  .plan-toggle{margin-top:14px;width:100%;padding:13px;border:none;border-radius:14px;
+    background:#fff;font-size:15px;font-weight:600;color:var(--blue);cursor:pointer;transition:.2s}
+  .plan-toggle:hover{background:rgba(0,113,227,.06)}
+
+  .plan{display:none;margin-top:14px;animation:rise .35s var(--ease)}
+  .plan.open{display:block}
+  .day{background:#fff;border-radius:16px;padding:18px 20px;margin-bottom:10px}
+  .day-head{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+  .day-num{font-size:13px;font-weight:700;color:var(--blue);letter-spacing:1px}
+  .day-title{font-size:15.5px;font-weight:600}
+  .day-cost{margin-left:auto;font-size:13px;color:var(--text2)}
+  .day-cost b{color:#248a3d;font-size:14px}
+  .day-body{font-size:14px;color:var(--text2);line-height:1.8}
+  .day-body b{color:var(--text);font-weight:600}
+  .free{display:inline-block;padding:1px 8px;border-radius:6px;background:rgba(48,209,88,.12);
+    color:#248a3d;font-size:12px;font-weight:600}
+  .plan-foot{font-size:13px;color:var(--text2);padding:6px 4px 0;line-height:1.7}
+
+  /* ===== 深圳入境攻略 ===== */
+  .port{background:#fff;border-radius:16px;padding:20px;margin-bottom:14px;
+    border:1px solid var(--line);transition:transform .2s}
+  .port:hover{transform:translateY(-2px)}
+  .port-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .port-icon{width:40px;height:40px;border-radius:10px;background:rgba(0,113,227,.1);
+    display:flex;align-items:center;justify-content:center;font-size:20px}
+  .port-name{font-size:16px;font-weight:600}
+  .port-best{margin-left:auto;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;
+    background:rgba(48,209,88,.15);color:#248a3d}
+  .port-details{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px}
+  .port-details div{background:var(--bg);padding:8px 12px;border-radius:8px}
+  .port-label{color:var(--text2);font-size:11px;margin-bottom:2px}
+  .port-val{font-weight:600}
+
+  .tool{background:var(--bg);border-radius:24px;padding:28px;margin-bottom:16px}
+  .tool h3{font-size:20px;font-weight:700;letter-spacing:-.5px;margin-bottom:14px}
+  .tool li{font-size:15px;color:#3a3a3c;line-height:1.8;margin-left:20px;margin-bottom:6px}
+  .tool .hl{background:rgba(255,159,10,.2);padding:0 3px;border-radius:3px}
+  .tool .warn{background:rgba(255,59,48,.12);color:#c9302c;padding:0 3px;border-radius:3px}
+
+  .empty{padding:48px 24px;text-align:center;color:var(--text2);font-size:16px;background:var(--bg);border-radius:24px}
+  footer{text-align:center;padding:40px 24px 60px;color:var(--text2);font-size:12px;
+    border-top:1px solid var(--line);margin-top:40px}
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+    html{scroll-behavior:auto}.reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a>穷游中国</a><a href="#form">预算</a><a href="#result">推荐</a><a href="#toolbox">工具箱</a><a href="#hk-macau">港澳攻略</a>
+</nav>
+
+<div class="switch" id="studentSwitch" onclick="toggleStudent()">
+  <span>🎓 学生模式</span><span class="switch-track"></span>
+</div>
+
+<section class="hero">
+  <div class="eyebrow">Budget · China · Student · HK/Macau</div>
+  <h1>全国目的地，<br>含<em>港澳</em>。</h1>
+  <p class="hero-sub">香港澳门穷游攻略 + 从深圳入境最全省钱方案。每个目的地自带行程表。</p>
+  <button class="pill primary" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})">开始规划</button>
+</section>
+
+<main>
+<section id="form">
+  <h2 class="reveal">你的行程</h2>
+  <p class="sub reveal">筛选越具体，推荐越准。</p>
+
+  <div class="student-note">
+    <b>🎓 学生模式已开启</b>：门票按<b>半价</b>计算，火车按<b>学生优惠价</b>估算，优先推荐学生友好目的地。
+  </div>
+
+  <div class="field reveal">
+    <label>地区（不限=全国推荐）</label>
+    <select id="region">
+      <option value="all">🇨🇳 全国推荐</option>
+      <option value="华北">华北（京津冀晋蒙）</option>
+      <option value="东北">东北（辽吉黑）</option>
+      <option value="华东">华东（沪苏浙皖闽赣鲁）</option>
+      <option value="华中">华中（豫鄂湘）</option>
+      <option value="华南">华南（粤桂琼）</option>
+      <option value="港澳">🇭🇰🇲🇴 香港 + 澳门</option>
+      <option value="西南">西南（渝川黔滇藏）</option>
+      <option value="西北">西北（陕甘青宁新）</option>
+    </select>
+  </div>
+
+  <div class="field reveal">
+    <label>交通方式</label>
+    <select id="transport">
+      <option value="train">火车硬卧（穷游首选）</option>
+      <option value="hst">高铁二等座</option>
+      <option value="bus">大巴（最便宜）</option>
+      <option value="fly">飞机（蹲特价）</option>
+    </select>
+  </div>
+
+  <div class="field reveal">
+    <label>身份</label>
+    <div class="seg" id="status">
+      <button data-v="none">普通</button>
+      <button data-v="univ" class="on">在校大学生</button>
+      <button data-v="fresh">应届中高考生</button>
+    </div>
+  </div>
+
+  <div class="field reveal">
+    <label>天数</label>
+    <input type="number" id="days" value="3" min="1" max="30">
+  </div>
+
+  <div class="field reveal">
+    <label>住宿标准（每晚）</label>
+    <select id="hotel">
+      <option value="50">青旅床位 ¥50</option>
+      <option value="80" selected>青旅/民宿 ¥80</option>
+      <option value="150">经济酒店 ¥150</option>
+    </select>
+  </div>
+
+  <div class="slider-row reveal">
+    <div class="slider-head">
+      <span>总预算上限</span>
+      <span class="slider-val"><span id="budgetShow">1000</span><small> 元</small></span>
+    </div>
+    <input type="range" id="budget" min="300" max="5000" step="100" value="1000">
+  </div>
+
+  <div class="field reveal">
+    <label>旅行偏好（可多选）</label>
+    <div class="tags" id="tags">
+      <button class="tag on" data-v="sea">看海</button>
+      <button class="tag on" data-v="culture">人文</button>
+      <button class="tag on" data-v="food">逛吃</button>
+      <button class="tag on" data-v="nature">山野</button>
+      <button class="tag on" data-v="chill">躺平</button>
+      <button class="tag on" data-v="hike">徒步</button>
+      <button class="tag on" data-v="shopping">购物</button>
+      <button class="tag on" data-v="night">夜生活</button>
+    </div>
+  </div>
+
+  <button class="btn reveal" onclick="calc()">为我推荐</button>
+
+  <div id="result">
+    <div class="budget-hero">
+      <div class="budget-num" id="total">¥0</div>
+      <div class="per-day" id="perday"></div>
+    </div>
+    <div class="saved-badge" id="savedBadge"></div>
+    <div class="detail" id="detail"></div>
+    <div class="tips" id="tips-box"></div>
+    <div class="dest-list-title">为你挑选的目的地</div>
+    <div class="dest-count" id="destCount"></div>
+    <div id="destList"></div>
+    <button class="btn" onclick="calc()">重新推荐</button>
+  </div>
+</section>
+
+<!-- 深圳入境攻略 -->
+<section id="hk-macau">
+  <h2 class="reveal">🇭🇰🇲🇴 从深圳入境香港澳门省钱攻略</h2>
+  <p class="sub reveal">选对口岸，省下大交通成本。</p>
+
+  <div class="port reveal">
+    <div class="port-head">
+      <div class="port-icon">🚢</div>
+      <div class="port-name">蛇口口岸（坐船）</div>
+      <div class="port-best">人少最舒适</div>
+    </div>
+    <div class="port-details">
+      <div><div class="port-label">耗时</div><div class="port-val">约50分钟</div></div>
+      <div><div class="port-label">费用</div><div class="port-val">¥120起</div></div>
+      <div><div class="port-label">通关时间</div><div class="port-val">07:00-22:30</div></div>
+      <div><div class="port-label">最适合</div><div class="port-val">想避开人流、体验海上视角</div></div>
+    </div>
+    <div style="margin-top:12px;font-size:13px;color:var(--text2);line-height:1.6">
+      👉 <b>推荐路线</b>：深圳蛇口码头 → 香港中环/上环（船程50分钟，¥120）【turn0search12】
+    </div>
+  </div>
+
+  <div class="port reveal">
+    <div class="port-head">
+      <div class="port-icon">🚇</div>
+      <div class="port-name">莲塘口岸（最省钱）</div>
+      <div class="port-best">最便宜</div>
+    </div>
+    <div class="port-details">
+      <div><div class="port-label">耗时</div><div class="port-val">约1.5小时</div></div>
+      <div><div class="port-label">费用</div><div class="port-val">¥10-15</div></div>
+      <div><div class="port-label">通关时间</div><div class="port-val">07:00-22:00</div></div>
+      <div><div class="port-label">最适合</div><div class="port-val">极致穷游党、不赶时间</div></div>
+    </div>
+    <div style="margin-top:12px;font-size:13px;color:var(--text2);line-height:1.6">
+      👉 <b>省钱路线</b>：过关后乘城巴B7线（¥10港币）到上水，转港铁至市区（约¥26港币）【turn0search4】。总成本约¥36人民币，比直达巴士省40%【turn0search4】。
+    </div>
+  </div>
+
+  <div class="port reveal">
+    <div class="port-head">
+      <div class="port-icon">🚄</div>
+      <div class="port-name">高铁（最快）</div>
+      <div class="port-best">速度最快</div>
+    </div>
+    <div class="port-details">
+      <div><div class="port-label">耗时</div><div class="port-val">14-30分钟</div></div>
+      <div><div class="port-label">费用</div><div class="port-val">¥68-75</div></div>
+      <div><div class="port-label">通关时间</div><div class="port-val">06:30-23:30</div></div>
+      <div><div class="port-label">最适合</div><div class="port-val">赶时间、首次赴港</div></div>
+    </div>
+    <div style="margin-top:12px;font-size:13px;color:var(--text2);line-height:1.6">
+      👉 <b>推荐路线</b>：深圳北/福田 → 香港西九龙（高铁14-18分钟）【turn0search1】。过关即西九龙站，无缝衔接港铁。
+    </div>
+  </div>
+
+  <div class="port reveal">
+    <div class="port-head">
+      <div class="port-icon">🚌</div>
+      <div class="port-name">深圳湾口岸（性价比）</div>
+      <div class="port-best">性价比之选</div>
+    </div>
+    <div class="port-details">
+      <div><div class="port-label">耗时</div><div class="port-val">约1小时</div></div>
+      <div><div class="port-label">费用</div><div class="port-val">¥50-55</div></div>
+      <div><div class="port-label">通关时间</div><div class="port-val">06:30-24:00</div></div>
+      <div><div class="port-label">最适合</div><div class="port-val">前往香港机场、屯门</div></div>
+    </div>
+    <div style="margin-top:12px;font-size:13px;color:var(--text2);line-height:1.6">
+      👉 <b>省钱路线</b>：过关后乘B2P巴士（¥8.5港币）至天水围，转港铁至市区（节省33%）【turn0search4】。
+    </div>
+  </div>
+
+  <div class="tool reveal" style="margin-top:24px">
+    <h3>💡 港澳穷游终极省钱技巧</h3>
+    <ul>
+      <li><b>交通</b>：办一张<b>八达通</b>，地铁站/711都能充值，成人卡押金50港币可退【turn0search5】。叮叮车3港币随便坐，港岛穿行首选【turn0search0】。</li>
+      <li><b>餐饮</b>：早餐茶餐厅套餐（30-50港币），下午茶街头小吃（10-20港币），晚餐看预算控制【turn0search0】。每天50港币伙食费是穷游底线【turn0search0】。</li>
+      <li><b>景点</b>：<b>维多利亚港、星光大道、太平山顶免费步道、西九文化区</b>都是顶级免费景点【turn0search0】。太平山顶缆车+凌霄阁套票约112港币，但山顶广场顶层的免费观景台已足够看【turn0search0】。</li>
+      <li><b>通讯</b>：提前在支付宝买境外流量包（10元3GB/天）【turn0search3】，或开通国际漫游套餐（20-50元）【turn0search0】。</li>
+      <li><b>兑换</b>：千万别在口岸换港币（汇率差5%）【turn0search4】，提前在内地银行换少量现金，日常消费直接刷银联或支付宝【turn0search14】。</li>
+      <li><b>澳门过关</b>：从珠海拱北口岸进入澳门最方便，紧邻大三巴、议事亭前地老城区【turn0search7】。</li>
+    </ul>
+  </div>
+</section>
+
+<section id="toolbox">
+  <h2 class="reveal">穷游工具箱。</h2>
+  <p class="sub reveal">大学生省钱的全部秘密，都在这。</p>
+  <div class="tool reveal">
+    <h3>🎫 学生证使用必读</h3>
+    <ul>
+      <li><b>务必带实体证原件</b>——绝大多数景区<span class="warn">不认</span>学信网截图和电子学生证。</li>
+      <li><b>提前 1-3 天预约</b>：热门景区学生票每日限量，在官方公众号/小程序抢。</li>
+      <li>优惠范围通常<span class="warn">仅限首道大门票</span>，索道、观光车等二次消费仍需自理。</li>
+      <li><b>研究生注意</b>：多数景区仅限“本科及以下”，出发前致电确认。</li>
+      <li><b>应届中高考生</b>：每年 6-8 月全国上百家景区凭准考证免首道门票。</li>
+      <li><b>香港学生优惠</b>：凭印有“学生身份”的个人八达通，12-25岁可享车费半价优惠【turn0search0】。</li>
+    </ul>
+  </div>
+  <div class="tool reveal">
+    <h3>💡 高阶穷游技巧</h3>
+    <ul>
+      <li><b>义工旅行</b>：青旅打工换宿，长住成本近乎为零。</li>
+      <li><b>夜车省房钱</b>：超过 5 天的行程，安排一晚卧铺夜车。</li>
+      <li><b>香港免费住宿</b>：麦理浩径白腊湾、石澳海滩都有免费营地，有公共洗手间和淋浴区【turn0search0】【turn0search11】。深圳当日往返也是终极省钱方案【turn0search0】。</li>
+      <li><b>澳门免费景点</b>：大三巴牌坊、议事亭前地、妈阁庙都是标志性免费景点。</li>
+      <li><b>景区 500 米内不吃饭</b>，往居民区走两条街价格砍半。</li>
+      <li><b>淡季出行</b>：全线降价 30%-50%，人还少。</li>
+    </ul>
+  </div>
+</section>
+</main>
+
+<footer>穷游中国 · 大学生版 · 含港澳 · 行程数据仅供参考</footer>
+
+<script>
+/* ===== 基础交互 ===== */
+const io = new IntersectionObserver(es => {
+  for (const e of es) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}, { rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+const budgetEl = document.getElementById('budget');
+let rafPending = false;
+function paintSlider() {
+  rafPending = false;
+  document.getElementById('budgetShow').textContent = budgetEl.value;
+  budgetEl.style.setProperty('--p', ((budgetEl.value - 300) / 4700 * 100) + '%');
+}
+budgetEl.addEventListener('input', () => {
+  if (!rafPending) { rafPending = true; requestAnimationFrame(paintSlider); }
+}, { passive: true });
+paintSlider();
+
+document.getElementById('tags').addEventListener('click', e => {
+  const btn = e.target.closest('.tag');
+  if (btn) btn.classList.toggle('on');
+});
+document.getElementById('status').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  document.querySelectorAll('#status button').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  savePrefs();
+});
+function toggleStudent() {
+  document.getElementById('studentSwitch').classList.toggle('on');
+  document.body.classList.toggle('student');
+  savePrefs();
+}
+function isStudent() { return document.body.classList.contains('student'); }
+function getStatus() { return document.querySelector('#status button.on').dataset.v; }
+
+function savePrefs() {
+  try {
+    localStorage.setItem('qy_prefs', JSON.stringify({
+      student: isStudent(), status: getStatus(),
+      region: document.getElementById('region').value,
+      transport: document.getElementById('transport').value,
+      hotel: document.getElementById('hotel').value,
+      days: document.getElementById('days').value, budget: budgetEl.value,
+      prefs: [...document.querySelectorAll('.tag.on')].map(b => b.dataset.v)
+    }));
+  } catch(e){}
+}
+function loadPrefs() {
+  try {
+    const p = JSON.parse(localStorage.getItem('qy_prefs'));
+    if (!p) return;
+    if (p.student) { document.body.classList.add('student'); document.getElementById('studentSwitch').classList.add('on'); }
+    if (p.status) document.querySelectorAll('#status button').forEach(b => b.classList.toggle('on', b.dataset.v === p.status));
+    ['region','transport','hotel','days'].forEach(k => { if (p[k]) document.getElementById(k).value = p[k]; });
+    if (p.budget) budgetEl.value = p.budget;
+    if (Array.isArray(p.prefs) && p.prefs.length)
+      document.querySelectorAll('.tag').forEach(b => b.classList.toggle('on', p.prefs.includes(b.dataset.v)));
+    paintSlider();
+  } catch(e){}
+}
+['region','transport','hotel','days'].forEach(id =>
+  document.getElementById(id).addEventListener('change', savePrefs));
+document.getElementById('tags').addEventListener('click', () => setTimeout(savePrefs, 0));
+loadPrefs();
+
+/* ===== 目的地数据库（含港澳）=====
+   c: 推荐天数当地花费基准(全价)  sf: 学生友好度  days:推荐天数  min:最低预算(不含大交通)
+   plan: [ [标题, 当日花费, 详情], ... ] */
+const DESTS = [
+// —— 港澳（新增）——
+{n:'香港',r:'港澳',p:['food','culture','chill','shopping','night'],c:800,sf:5,days:3,min:600,
+ tag:'维港夜景 · 茶餐厅天堂 · 从深圳入境超便宜',d:'从深圳蛇口/莲塘口岸入境，维港两岸24小时免费开放，天星小轮3港币，青旅170港币/晚。',
+ plan:[['维港+尖沙咀核心',200,'上午从深圳过关（推荐莲塘口岸+城巴B7，约¥36人民币）【turn0search4】。下午逛<strong>尖沙咀海港城</strong>、<strong>星光大道</strong>看明星手印 <span class="free">免费</span>。傍晚<strong>天星小轮</strong>过海（6.5港币）看维港夜景 <span class="free">免费</span>【turn0search0】。晚上<strong>幻彩咏香江</strong>灯光秀（20:00开始） <span class="free">免费</span>【turn0search14】。'],
+ ['太平山+中环+兰桂坊',220,'上午乘<strong>15号巴士</strong>上太平山顶（十来块直达，比缆车便宜且视野好）【turn0search14】。山顶广场免费观景台看全港 <span class="free">免费</span>【turn0search0】。下午<strong>中环</strong>逛半山扶梯、<strong>大馆</strong>（前监狱免费开放）【turn0search8】。晚上<strong>兰桂坊</strong>感受夜生活 <span class="free">免费</span>。'],
+ ['旺角+深水埗+购物',200,'上午<strong>旺角</strong>逛女人街、波鞋街（购物按需）【turn0search9】。下午<strong>深水埗</strong>淘平价电子、逛街市 <span class="free">免费</span>。晚上<strong>庙街夜市</strong>吃咖喱鱼蛋（10-12港币）【turn0search0】。']]},
+{n:'澳门',r:'港澳',p:['culture','food','chill'],c:600,sf:4,days:2,min:450,
+ tag:'大三巴 · 葡式美食 · 从珠海拱北口岸进入',d:'从珠海拱北口岸过关即达老城区，大三巴、妈阁庙免费，猪扒包蛋挞人均30。',
+ plan:[['老城区+大三巴',150,'上午从珠海拱北口岸过关（免费）【turn0search7】。步行至<strong>议事亭前地</strong>、<strong>玫瑰堂</strong> <span class="free">免费</span>。下午<strong>大三巴牌坊</strong>、<strong>大炮台</strong> <span class="free">免费</span>。晚上<strong>官也街</strong>吃猪扒包（20-30元）、葡式蛋挞（10-15元）。'],
+ ['妈阁+路环+返程',120,'上午<strong>妈阁庙</strong>（澳门最古老庙宇） <span class="free">免费</span>。下午乘公交至<strong>路环岛</strong>逛安德鲁饼店（蛋挞总店，约15元）、圣方济各圣堂 <span class="free">免费</span>。傍晚返回珠海。']]},
+// —— 西南（原有）——
+{n:'重庆',r:'西南',p:['food','culture','chill'],c:800,sf:5,days:3,min:600,tag:'8D魔幻城市 · 0元看夜景',d:'洪崖洞、李子坝免费，小面6元，青旅60元。',
+ plan:[['解放碑+洪崖洞夜景',180,'上午到<strong>解放碑</strong>寄存行李，逛八一好吃街吃小面（6元）。下午<strong>山城步道</strong> <span class="free">免费</span>。晚上<strong>洪崖洞+千厮门大桥</strong>看夜景 <span class="free">免费</span>——大桥上拍洪崖洞最佳。'],
+ ['李子坝+鹅岭二厂',150,'早高峰去<strong>李子坝</strong>看轻轨穿楼 <span class="free">免费</span>，中午鹅岭二厂文创园拍照 <span class="free">免费</span>，下午长江索道（30元）过江，晚上南滨路看对岸夜景 <span class="free">免费</span>。'],
+ ['磁器口+涂鸦街',170,'上午<strong>磁器口古镇</strong> <span class="free">免费</span>，陈麻花10元。下午川美涂鸦街 <span class="free">免费</span>，交通茶馆喝茶5元。火锅告别局人均40。']]},
+{n:'成都',r:'西南',p:['food','chill','culture'],c:850,sf:5,days:3,min:650,tag:'来了就不想走 · 公园城市',d:'人民公园喝茶10元，串串人均30，宽窄巷子免费。',
+ plan:[['天府广场+人民公园',200,'上午<strong>人民公园</strong>鹤鸣茶社喝盖碗茶（10元），掏耳朵别在景区做。下午<strong>宽窄巷子</strong> <span class="free">免费</span> 拍照。晚上建设路小吃街人均30。'],
+ ['大熊猫基地+太古里',250,'早起去<strong>熊猫基地</strong>（学生票27元，一定要赶开园），下午太古里+春熙路 <span class="free">免费</span>，IFS爬墙熊猫打卡。晚上玉林路小酒馆听歌。'],
+ ['杜甫草堂+九眼桥',200,'<strong>杜甫草堂</strong>学生票25元，浣花溪公园 <span class="free">免费</span>。下午东郊记忆 <span class="free">免费</span>，晚上九眼桥夜景 <span class="free">免费</span>，串串告别局人均30。']]},
+{n:'贵州镇远',r:'西南',p:['culture','food','nature'],c:500,sf:5,days:3,min:400,tag:'免费古镇 · 酸汤鱼故乡',d:'古镇不收门票，卷粉5元管饱，江边住宿70元。',
+ plan:[['古镇漫游',130,'全天<strong>镇远古城</strong> <span class="free">免费</span>：青龙洞（学生票15元）、歪门邪道巷子拍照。晚饭酸汤鱼人均40，夜宿江边看夜景 <span class="free">免费</span>。'],
+ ['铁溪+石屏山',120,'上午<strong>铁溪景区</strong>徒步（学生票25元），下午登<strong>石屏山</strong>看古城全景（学生票15元，日落时分最美）。晚上卷粉+米豆腐10元。'],
+ ['舞阳河晨雾',150,'清晨沿<strong>舞阳河</strong>散步看晨雾 <span class="free">免费</span>（免费大片），早饭牛肉粉8元，收拾返程。']]},
+{n:'云南大理',r:'西南',p:['chill','nature','sea'],c:800,sf:4,days:4,min:700,tag:'风花雪月 · 数字游民大本营',d:'环洱海骑行租车50元，古城免费，才村日落0元。',
+ plan:[['大理古城',150,'<strong>古城</strong> <span class="free">免费</span> 慢逛，人民路摆摊文化。傍晚<strong>才村码头</strong>看洱海日落 <span class="free">免费</span>。乳扇10元、烤饵块5元。'],
+ ['环洱海西线骑行',180,'租电动车50元，<strong>生态廊道</strong>骑行 <span class="free">免费</span>：喜洲古镇（破酥粑粑10元）、海舍公路网红S弯拍照 <span class="free">免费</span>。'],
+ ['环洱海东线',200,'电动车再租一天，双廊、小普陀、挖色码头，东线看海视角最好 <span class="free">免费</span>。白族菜人均25。'],
+ ['苍山+三塔',170,'<strong>苍山</strong>感通索道可选（徒步免门票），<strong>崇圣寺三塔</strong>外观拍即可（门票75可省）。古城买鲜花饼带回。']]},
+{n:'拉萨',r:'西南',p:['culture','hike','nature'],c:1200,sf:3,days:4,min:1000,tag:'此生必去 · 阳光之城',d:'布宫学生半价，甜茶馆5元坐一下午，八廓街转经免费。',
+ plan:[['适应海拔+八廓街',150,'抵达当天别洗澡别剧烈活动。慢逛<strong>八廓街</strong>转经 <span class="free">免费</span>，甜茶馆甜茶5元坐一下午，看藏民生活。'],
+ ['布达拉宫',300,'<strong>布宫</strong>需提前一天预约，学生票100元。上午进宫，下午<strong>药王山</strong>拍50元人民币同款布宫 <span class="free">免费</span>，宗角禄康公园 <span class="free">免费</span>。'],
+ ['大昭寺+色拉寺',250,'<strong>大昭寺</strong>学生票42元，下午3-5点<strong>色拉寺</strong>看辩经（门票50元，强烈推荐）。晚上藏面+甜茶15元。'],
+ ['羊卓雍措一日',350,'拼车去<strong>羊湖</strong>人均150元（4人拼车最划算），学生证有优惠。湖边风大带外套。']]},
+// —— 华南（原有）——
+{n:'泉州',r:'华南',p:['culture','food','chill'],c:800,sf:5,days:3,min:600,tag:'半城烟火半城仙 · 世界遗产',d:'开元寺免费，面线糊10元，西街青旅60元。',
+ plan:[['西街+开元寺',180,'<strong>开元寺</strong> <span class="free">免费</span>（东西塔必看），<strong>西街</strong>慢逛，面线糊10元+醋肉。傍晚钟楼下拍骑楼黄昏 <span class="free">免费</span>。'],
+ ['寺庙巡礼',170,'上午<strong>关帝庙</strong> <span class="free">免费</span>+清净寺（3元），下午<strong>蟳埔村</strong>簪花围拍照（体验约40元，不拍照村子免费逛）。四果汤6元。'],
+ ['洛阳桥+海边',150,'<strong>洛阳桥</strong>宋代跨海石桥 <span class="free">免费</span>，傍晚<strong>滨海公园</strong>看海 <span class="free">免费</span>。晚饭姜母鸭人均45。']]},
+{n:'广西涠洲岛',r:'华南',p:['sea','chill'],c:900,sf:4,days:3,min:800,tag:'人均最低的海岛',d:'淡季上岛费学生半价，租电动车50元/天，海鲜加工人均30。',
+ plan:[['上岛+西海岸',300,'船票+上岛费约300元（学生半价）。傍晚<strong>滴水丹屏</strong>看日落 <span class="free">免费</span>，南湾街买海鲜找店加工人均30。'],
+ ['环岛骑行',200,'租电动车50元：五彩滩日出（门票含）、<strong>鳄鱼山公园</strong>（学生半价）、天主教堂 <span class="free">免费</span>。午饭香蕉猪扣肉饭25元。'],
+ ['贝壳沙滩+离岛',200,'清晨<strong>贝壳沙滩</strong>赶海 <span class="free">免费</span>，上午退房寄存，下午坐船返程。虾饼5元当干粮。']]},
+{n:'厦门',r:'华南',p:['sea','food','chill'],c:900,sf:4,days:3,min:700,tag:'海上花园 · 文艺之城',d:'环岛路免费骑行，鼓浪屿轮渡35元往返，沙坡尾免费。',
+ plan:[['环岛路+沙坡尾',180,'租共享单车沿<strong>环岛路</strong>骑行 <span class="free">免费</span>，白城沙滩看海 <span class="free">免费</span>。下午<strong>沙坡尾+猫街</strong> <span class="free">免费</span>，沙茶面15元。'],
+ ['鼓浪屿一日',250,'轮渡往返35元，岛上不买联票乱逛最美：<strong>最美转角、日光岩外围、海边栈道</strong>都免费。馅饼10元，叶氏麻糍2元。'],
+ ['山海步道+集美',200,'<strong>山海健康步道</strong> <span class="free">免费</span> 俯瞰全岛，下午地铁1号线跨海段打卡（刷公交卡几块钱）。八市海鲜大排档人均40。']]},
+// —— 华中（原有）——
+{n:'长沙',r:'华中',p:['food','culture','chill'],c:750,sf:5,days:3,min:600,tag:'美食顶流 · 夜生活之城',d:'橘子洲免费，茶颜悦色16元，小龙虾人均60。',
+ plan:[['橘子洲+湘江夜景',200,'地铁直达<strong>橘子洲头</strong> <span class="free">免费</span>（青年毛泽东雕像），傍晚<strong>杜甫江阁</strong>看湘江日落 <span class="free">免费</span>。茶颜悦色16元打卡。'],
+ ['岳麓山+大学城',180,'<strong>岳麓山</strong> <span class="free">免费</span>（爱晚亭、岳麓书院学生票25元），中午大学城帅哥烧饼8元。晚上文和友排队或去本地苍蝇馆子。'],
+ ['博物馆+夜市',170,'<strong>湖南省博</strong>免费（提前预约，看辛追夫人），下午米粉街嗦粉12元，晚上扬帆夜市人均40吃到撑。小龙虾告别局人均60。']]},
+{n:'湖北恩施',r:'华中',p:['nature','hike'],c:800,sf:5,days:3,min:650,tag:'中国仙本那 · 世界硒都',d:'屏山峡谷学生优惠，鹿院坪徒步免门票，土豆饭便宜大碗。',
+ plan:[['恩施市区+土司城',180,'<strong>土司城</strong>学生票25元，女儿城 <span class="free">免费</span> 晚上有民俗表演。合渣+土豆饭人均20。'],
+ ['屏山峡谷一日',280,'拼车去<strong>屏山峡谷</strong>（门票+船约210元，学生证优惠）——中国仙本那玻璃船必体验。张关合渣人均25。'],
+ ['鹿院坪徒步',200,'<strong>鹿院坪</strong>徒步（免门票，地缝峡谷徒步4小时）。体力不好改去梭布垭石林（学生半价45元）。']]},
+{n:'河南洛阳',r:'华中',p:['culture','food'],c:700,sf:4,days:3,min:550,tag:'十三朝古都 · 牡丹花城',d:'龙门石窟学生半价，水席人均30，牛肉汤8元管饱。',
+ plan:[['龙门石窟+关林',220,'<strong>龙门石窟</strong>学生票45元（夜游票更便宜更美），西山卢舍那大佛必看。<strong>关林</strong>20元。牛肉汤8元+饼丝2元。'],
+ ['白马寺+洛邑古城',180,'<strong>白马寺</strong>35元（中国第一古刹），下午<strong>洛邑古城</strong> <span class="free">免费</span>（汉服拍照圣地，租汉服50元）。晚上真不同水席人均30。'],
+ ['博物馆+应天门',150,'<strong>洛阳博物馆</strong> <span class="free">免费</span>，<strong>应天门</strong>外观+广场 <span class="free">免费</span>（不进景区地上拍夜景足够）。不翻汤10元。']]},
+// —— 西北（原有）——
+{n:'西安',r:'西北',p:['culture','food'],c:800,sf:5,days:3,min:650,tag:'碳水之都 · 盛唐气象',d:'城墙学生半价，肉夹馍8元，青旅60元。',
+ plan:[['城墙+回民街巷子',200,'<strong>城墙</strong>学生票27元骑行一圈（租车45元）。别去回民街主街，钻<strong>洒金桥、大皮院</strong>：肉夹馍8元、胡辣汤10元。'],
+ ['陕历博+大雁塔',180,'<strong>陕西历史博物馆</strong> <span class="free">免费</strong>（提前5天抢预约！），<strong>大雁塔北广场</strong>音乐喷泉 <span class="free">免费</span>，大唐不夜城夜景 <span class="free">免费</span>。'],
+ ['兵马俑',250,'公交游5路直达<strong>兵马俑</strong>（学生票60元，一定要请讲解或蹭）。傍晚华清池外观，泡馍25元告别。']]},
+// —— 华东（原有）——
+{n:'杭州',r:'华东',p:['nature','chill','culture'],c:850,sf:5,days:3,min:650,tag:'免费西湖 · 人间天堂',d:'西湖九溪全免费，片儿川15元，青旅80元。',
+ plan:[['西湖环线',150,'断桥→白堤→平湖秋月→苏堤 <span class="free">免费</span>，坐船不去（环湖骑行+步行最美）。片儿川15元，定胜糕6元。'],
+ ['九溪+龙井',130,'<strong>九溪十八涧</strong>徒步 <span class="free">免费</span>（杭州人私藏），走到<strong>龙井村</strong>喝茶20元坐一下午。傍晚杨公堤看日落 <span class="free">免费</span>。'],
+ ['运河+南宋御街',170,'<strong>京杭大运河</strong>拱宸桥段 <span class="free">免费</span>，<strong>南宋御街+河坊街</strong> <span class="free">免费</span>，胡雪岩故居学生票10元。葱包桧8元。']]},
+// —— 华北（原有）——
+{n:'北京',r:'华北',p:['culture','food'],c:1000,sf:5,days:4,min:800,tag:'博物馆之城 · 学生党天堂',d:'国博免费，故宫学生票20元，青旅80元住四合院。',
+ plan:[['天安门+故宫',200,'清晨<strong>天安门广场</strong>看升旗 <span class="free">免费</span>（查好时间），<strong>故宫</strong>学生票20元（提前7天预约！）。下午景山公园俯瞰故宫（2元）。炸酱面18元。'],
+ ['长城一日',180,'公交877路直达<strong>八达岭</strong>（学生票20元）或拼车去慕田峪（学生票25元，人少景美）。回来晚上鸟巢水立方夜景 <span class="free">免费</span>。'],
+ ['博物馆日',120,'<strong>国家博物馆</strong> <span class="free">免费</span>（古代中国展看一天），<strong>前门大栅栏</strong> <span class="free">免费</span>。门框胡同卤煮22元。'],
+ ['胡同+颐和园',200,'上午<strong>五道营/国子监胡同</strong> <span class="free">免费</span> 骑车，下午<strong>颐和园</strong>学生票15元（昆明湖泛舟另算），傍晚什刹海 <span class="free">免费</span>。烤鸭告别局人均60（四季民福性价比之王）。']]},
+];
+
+const REGION_TRANS = {
+  '华北':350,'东北':600,'华东':400,'华中':350,
+  '华南':600,'西南':500,'西北':800,
+  '港澳':500  // 深圳往返港澳大交通（高铁+港铁约120-150元）【turn0search0】
+};
+
+/* ===== 学生优惠引擎 ===== */
+function studentFactors() {
+  const st = getStatus();
+  if (!isStudent() || st === 'none') return { ticket: 1, trans: 1 };
+  if (st === 'fresh') return { ticket: 0, trans: .9 };
+  return { ticket: .5, trans: .9 };
+}
+
+/* ===== 计算 ===== */
+function calc() {
+  const days = Math.min(30, Math.max(1, +document.getElementById('days').value || 3));
+  const t = document.getElementById('transport').value;
+  const hotel = +document.getElementById('hotel').value;
+  const budget = +budgetEl.value;
+  const region = document.getElementById('region').value;
+  const prefs = [...document.querySelectorAll('.tag.on')].map(b => b.dataset.v);
+  const stu = studentFactors();
+  savePrefs();
+
+  const transMode = { train:.8, hst:1.4, bus:.6, fly:1.1 }[t];
+  const transStu = (t === 'train') ? stu.trans : 1;
+
+  const pool = DESTS.filter(d =>
+    (region === 'all' || d.r === region) && d.p.some(p => prefs.includes(p)));
+
+  const scored = pool.map(d => {
+    const local = Math.round(d.c - d.c * .25 * (1 - stu.ticket));
+    const trans = Math.round((region === 'all' ? d.c * .9 + 150 : REGION_TRANS[region]) * transMode * transStu);
+    return { ...d, local, trans, total: local + trans };
+  });
+
+  scored.sort((a, b) => {
+    const fa = a.total <= budget ? 0 : 1, fb = b.total <= budget ? 0 : 1;
+    if (fa !== fb) return fa - fb;
+    const da = Math.abs(budget - a.total), db = Math.abs(budget - b.total);
+    if (da !== db) return da - db;
+    return (b.sf||3) - (a.sf||3);
+  });
+  const show = scored.slice(0, 8);
+
+  const top5 = scored.slice(0, 5);
+  const avgLocal = top5.length ? Math.round(top5.reduce((s,d)=>s+d.local,0)/top5.length) : 0;
+  const trans = Math.round((region==='all'?500:REGION_TRANS[region]) * transMode * transStu);
+  const buffer = Math.round((avgLocal + trans) * .05);
+  const total = avgLocal + trans + buffer;
+
+  document.getElementById('result').style.display = 'block';
+  const numEl = document.getElementById('total');
+  numEl.textContent = '¥' + (total ? total.toLocaleString() : '—');
+  numEl.classList.toggle('over', total > budget);
+  document.getElementById('perday').textContent =
+    (total > budget ? '超出预算 ¥' + (total - budget) : '在预算内') +
+    ' · 日均 ¥' + (total ? Math.round(total/days) : 0) + ' · ' + days + ' 天';
+
+  const badge = document.getElementById('savedBadge');
+  const saved = avgLocal ? Math.round(avgLocal * .25 * (1 - stu.ticket)) : 0;
+  if (saved > 0) {
+    badge.textContent = '🎓 学生身份已为你省下约 ¥' + saved.toLocaleString();
+    badge.classList.add('show');
+  } else badge.classList.remove('show');
+
+  const items = [
+    ['交通往返', trans, '#0071e3', region === '港澳' ? '深圳往返（高铁+港铁）' : transStu < 1 ? '学生火车优惠已折算' : '按你的选择估算'],
+    ['当地吃住玩', avgLocal, '#ff9f0a', saved > 0 ? '门票优惠已折算' : '目的地实测标准'],
+    ['机动备用', buffer, '#86868b', '总有意外']
+  ];
+  const frag = document.createDocumentFragment();
+  for (const [n, v, c, s] of items) {
+    const row = document.createElement('div');
+    row.className = 'detail-row';
+    row.innerHTML = `<span class="dot" style="background:${c}"></span>
+      <div>${n}<small>${s}</small></div><b>¥${v.toLocaleString()}</b>`;
+    frag.appendChild(row);
+  }
+  const detail = document.getElementById('detail');
+  detail.textContent = ''; detail.appendChild(frag);
+
+  const tips = [];
+  if (region === '港澳') {
+    tips.push('🇭🇰🇲🇴 港澳穷游核心：<b>从深圳走蛇口口岸（坐船）或莲塘口岸（最省钱）</b>，别直飞香港。');
+    tips.push('💰 香港吃饭每天50港币是底线（茶餐厅+街边小吃），住宿选网吧过夜或青旅床位。');
+    tips.push('🎫 澳门大三巴、妈阁庙全免费，从珠海拱北口岸过关即达老城区。');
+  }
+  if (saved > 0) tips.push('学生证记得带原件！热门景区提前 1-3 天在官方渠道预约学生票。');
+  if (getStatus() === 'fresh') tips.push('应届中高考生：6-8 月上百家景区凭准考证免首道门票。');
+  if (t === 'hst') tips.push('高铁比硬卧贵一倍，时间不紧就换火车，省下的钱够住三天。');
+  if (total > budget) tips.push('超预算了。最有效的两刀：交通换硬卧、住宿换青旅床位。');
+  tips.push('行程表里的日花费是穷游实测标准，丰俭由人。');
+  document.getElementById('tips-box').innerHTML = tips.map(tp =>
+    `<div class="tip"><span class="tip-icon">›</span><span>${tp}</span></div>`).join('');
+
+  const list = document.getElementById('destList');
+  document.getElementById('destCount').textContent =
+    `共匹配 ${scored.length} 个目的地${scored.length > 8 ? '，展示最匹配的前 8 个' : ''}`;
+  if (!show.length) {
+    list.innerHTML = `<div class="empty">没有匹配的目的地。试试放宽偏好或选择其他地区。</div>`;
+  } else {
+    list.innerHTML = show.map((d, i) => {
+      const fit = d.total <= budget ? ['perfect','✅ 预算内'] :
+                  d.total <= budget * 1.2 ? ['good','👍 超一点'] : ['over','⚠️ 需要攒'];
+      return `<div class="dest" style="animation-delay:${i*.06}s">
+        <div class="dest-name">${d.n}<span class="fit ${fit[0]}" style="margin-left:12px">${fit[1]}</span></div>
+        <div class="dest-tag">${d.r} · ${d.tag}</div>
+        <div class="dest-desc">${d.d}</div>
+        <div class="dest-summary">
+          <span class="chip">🗓 建议 <b>${d.days} 天</b></span>
+          <span class="chip">💰 当地 <b>¥${d.min}</b> 起</span>
+          <span class="chip">总计约 <b>¥${d.total.toLocaleString()}</b></span>
+        </div>
+        <button class="plan-toggle" onclick="this.nextElementSibling.classList.toggle('open');this.textContent=this.textContent.startsWith('查看')?'收起行程 ▲':'查看完整行程表 ▼'">查看完整行程表 ▼</button>
+        <div class="plan">
+          ${d.plan.map((p,j)=>`<div class="day">
+            <div class="day-head"><span class="day-num">DAY ${j+1}</span>
+              <span class="day-title">${p[0]}</span>
+              <span class="day-cost">当日约 <b>¥${p[1]}</b></span></div>
+            <div class="day-body">${p[2]}</div>
+          </div>`).join('')}
+          <div class="plan-foot">📌 行程按穷游标准排（青旅+本地吃+免费景点为主）。¥${d.min} 是当地最低预算，不含往返大交通（约¥${d.trans}）。多一天多约 ¥150。</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('result').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>
